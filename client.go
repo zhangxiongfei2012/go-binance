@@ -161,11 +161,17 @@ func newJSON(data []byte) (j *simplejson.Json, err error) {
 // NewClient initialize an API client instance with API key and secret key.
 // You should always call this function before using this SDK.
 // Services will be created by the form client.NewXXXService().
-func NewClient(apiKey, secretKey string) *Client {
+func NewClient(apiKey, secretKey string,isTestNet bool) *Client {
+	var baseURL string
+	if isTestNet == true{
+		baseURL="https://testnet.binance.vision"
+	}else {
+		baseURL="https://api.binance.com"
+	}
 	return &Client{
 		APIKey:     apiKey,
 		SecretKey:  secretKey,
-		BaseURL:    "https://testnet.binance.vision",
+		BaseURL:    baseURL,
 		UserAgent:  "Binance/golang",
 		HTTPClient: http.DefaultClient,
 		Logger:     log.New(os.Stderr, "Binance-golang ", log.LstdFlags),
