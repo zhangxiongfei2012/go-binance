@@ -106,6 +106,9 @@ type MarketLotSizeFilter struct {
 type MaxNumAlgoOrdersFilter struct {
 	MaxNumAlgoOrders int `json:"maxNumAlgoOrders"`
 }
+type MaxNumOrdersFilter struct {
+	MaxNumOrders int `json:"maxNumOrders"`
+}
 
 // LotSizeFilter return lot size filter of symbol
 func (s *Symbol) LotSizeFilter() *LotSizeFilter {
@@ -228,6 +231,19 @@ func (s *Symbol) MaxNumAlgoOrdersFilter() *MaxNumAlgoOrdersFilter {
 			f := &MaxNumAlgoOrdersFilter{}
 			if i, ok := filter["maxNumAlgoOrders"]; ok {
 				f.MaxNumAlgoOrders = int(i.(float64))
+			}
+			return f
+		}
+	}
+	return nil
+}
+// MaxNumOrdersFilter return max num orders filter of symbol
+func (s *Symbol) MaxNumOrdersFilter() *MaxNumOrdersFilter {
+	for _, filter := range s.Filters {
+		if filter["filterType"].(string) == string(SymbolFilterTypeMaxNumOrders) {
+			f := &MaxNumOrdersFilter{}
+			if i, ok := filter["maxNumOrders"]; ok {
+				f.MaxNumOrders = int(i.(float64))
 			}
 			return f
 		}
